@@ -1,0 +1,23 @@
+{
+  "presets": [
+    "es2017",
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    ['lodash'],
+    ['transform-decorators'],
+    ['transform-decorators-legacy'],
+    ['transform-object-rest-spread', { 'useBuiltIns': true }],
+    ['transform-function-bind'],
+    ['transform-class-properties'],
+    ['transform-react-display-name'],
+    ['syntax-dynamic-import']
+  ],
+  "env": {
+    "test": {
+      "presets": ["es2017", "react", "stage-0"]
+    }
+  }
+}
+
