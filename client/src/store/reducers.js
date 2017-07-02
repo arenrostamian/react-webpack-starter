@@ -2,10 +2,14 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { base } from '../base/config'
 
+/* * Reducers * */
+import { searchReducer } from './modules/search'
+
 import { LOGOUT } from './modules/firebase'
 
 const appReducer = combineReducers({
-  routing: routerReducer
+  routing: routerReducer,
+  search: searchReducer
 })
 
 const rootReducer = (state, action) => {

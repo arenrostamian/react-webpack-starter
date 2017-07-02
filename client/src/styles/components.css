@@ -1,4 +1,7 @@
 .home {
   background-color: pink;
+  bottom: 0;
   color: red;
+  position: absolute;
+  width: 100vw;
 }

@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import packages from '../../../assets/mockData'
 
+/* * Actions * */
+import { setSearchResults } from '../../store/modules/search'
+
 /* * Components * */
 import Autosuggest from 'react-autosuggest'
 
 /* * Styles * */
 import style from '../../styles/nav-bar.css'
-import theme from './theme'
+import autosuggestStyle from './autosuggest-style'
 
 const getSuggestionValue = (suggestion) => suggestion.name
 
@@ -27,16 +30,14 @@ class SearchBar extends Component {
       suggestions: [],
       hover: false
     }
-    this.getSuggestions = this.getSuggestions.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
+    this.getSuggestions = this.getSuggestions.bind(this)
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
   }
 
-  onChange ({ newValue }) {
-    const { getStateThroughProps } = this.props
-    getStateThroughProps(false)
+  onChange (e, { newValue }) {
     this.setState({ value: newValue })
   }
 
@@ -59,10 +60,10 @@ class SearchBar extends Component {
     })
   }
 
-  onSuggestionSelected ({ suggestion }) {
-    const { name } = suggestion
-    const { getStateThroughProps } = this.props
-    getStateThroughProps(true, displayName, id, categoryID)
+  onSuggestionSelected (e, { suggestion }) {
+    const { packageID } = suggestion
+    const { setSearchResults } = this.props
+    setSearchResults({packageID})
   }
 
   render () {
@@ -75,8 +76,7 @@ class SearchBar extends Component {
     return (
       <div className={style.search}>
         <Autosuggest
-          theme={theme}
-          multiSection
+          theme={autosuggestStyle}
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -94,4 +94,4 @@ class SearchBar extends Component {
 //   return { user, friends }
 // }
 
-export default SearchBar
+export default connect(null, { setSearchResults })(SearchBar)
