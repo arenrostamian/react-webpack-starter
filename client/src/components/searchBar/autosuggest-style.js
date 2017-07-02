@@ -1,9 +1,10 @@
 const autosuggestStyle = {
   input: {
     backgroundColor: 'transparent',
-    border: 'white',
+    border: '1px solid white',
     color: '#2a333c',
     fontSize: '15px',
+    margin: '5px 0 5px 0',
     padding: '10px 20px'
   },
   inputFocused: {
