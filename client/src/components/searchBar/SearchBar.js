@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import packages from '../../../assets/mockData'
+import { packages } from '../../../assets/mockData'
 
 /* * Actions * */
 import { setSearchResults } from '../../store/modules/search'

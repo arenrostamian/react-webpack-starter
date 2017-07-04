@@ -1,6 +1,6 @@
 // import and set as initial state on redux
 // will set up in firebase and call on component will mount or something
-const packages = [
+export const packages = [
   {
     packageID: 1,
     name: 'axios',
@@ -60,5 +60,3 @@ const packages = [
     test: 'https://npm.runkit.com/axios'
   }
 ]
-
-export default packages

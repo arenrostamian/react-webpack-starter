@@ -1,5 +1,3 @@
-/* * CHECK WHY REDUX ISN'T RESETTING PACKAGEID FROM SEARCH BAR * */
-
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'

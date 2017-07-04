@@ -5,7 +5,8 @@ const autosuggestStyle = {
     color: '#2a333c',
     fontSize: '15px',
     margin: '5px 0 5px 0',
-    padding: '10px 20px'
+    padding: '10px 20px',
+    width: '200px'
   },
   inputFocused: {
     outline: 'none'
@@ -26,6 +27,7 @@ const autosuggestStyle = {
     border: 'transparent',
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
+    width: '200px',
     zIndex: 2
   },
   suggestionsList: {

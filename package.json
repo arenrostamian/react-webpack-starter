@@ -5,15 +5,17 @@
   "scripts": {
     "build": "node_modules/.bin/webpack -p --watch",
     "rollout": "webpack-dev-server --watch --progress",
-    "start": "node server/server.js",
+    "start": "nodemon server/server.js",
     "style": "standard",
     "style:fix": "npm run style -- --fix"
   },
   "license": "MIT",
   "dependencies": {
+    "api-npm": "^1.0.0",
     "axios": "^0.16.1",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-lodash": "^3.2.11",
+    "body-parser": "^1.17.2",
     "bootstrap": "^4.0.0-alpha",
     "compression": "^1.6.2",
     "express": "^4.15.2",
