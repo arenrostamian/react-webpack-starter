@@ -23,14 +23,13 @@ class NavBar extends Component {
 
   handleItemClick (event, { name }) {
     event.preventDefault()
-    console.log('store is ', store)
+    console.log('props are ', this.props)
     console.log('name is ', name)
     this.setState({ activeItem: name })
   }
 
   handleLogout (e, { name }) {
-    e.preventDefault()
-    console.log('log out')
+    console.log('log in')
   }
 
   render () {

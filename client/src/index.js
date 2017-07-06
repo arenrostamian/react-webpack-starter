@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { ConnectedRouter } from 'react-router-redux'
+import createHistory from 'history/createBrowserHistory'
 
 /* * Utils * */
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -14,14 +16,18 @@ import app from './app'
 
 injectTapEventPlugin()
 
+const history = createHistory()
+
 const consoleErrorReporter = ({error}) => <RedBox error={error} />
 
 /* * wrapping App.js in Provider component to allow access to our redux store * */
-const render = function (Component) {
+const render = function (App) {
   ReactDOM.render(
     <AppContainer errorReporter={consoleErrorReporter}>
       <Provider store={store}>
-        <Component />
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
       </Provider>
     </AppContainer>,
     document.getElementById('root')
