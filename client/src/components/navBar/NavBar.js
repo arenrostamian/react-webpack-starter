@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import { push } from 'react-router-redux'
 
 /* * Components * */
@@ -23,26 +25,30 @@ class NavBar extends Component {
 
   handleItemClick (event, { name }) {
     event.preventDefault()
-    console.log('props are ', this.props)
-    console.log('name is ', name)
     this.setState({ activeItem: name })
   }
 
   handleLogout (e, { name }) {
-    console.log('log in')
+    // const { ownProps } = this.props
+    console.log('navbar', this)
+    const location = './profile'
+
+    // this.props.pushRoute({ location })
+    // two.dispatch(push('/profile'))
+    // console.log('log ', this.props)
   }
 
   render () {
     const { activeItem } = this.state
-    const { bar, button } = semanticStyle
+    const { button } = semanticStyle
     return (
       <div className={style.container}>
         <div className={style.navigation}>
           <Menu pointing secondary>
             <Menu.Menu position='right'>
               <Menu.Item style={button}
-                name='HOME'
-                active={activeItem === 'HOME'}
+                name='home'
+                active={activeItem === 'home'}
                 onClick={this.handleItemClick}
                 />
               <Menu.Item style={button}
@@ -51,8 +57,8 @@ class NavBar extends Component {
                 onClick={this.handleItemClick}
                 />
               <Menu.Item style={button}
-                name='LOG IN'
-                active={activeItem === 'LOG IN'}
+                name=' LOG IN'
+                active={activeItem === ' LOG IN'}
                 onClick={this.handleLogout}
                 />
             </Menu.Menu>
@@ -66,6 +72,8 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = null
+const mapStateToProps = (store, props) => {
+  return { store, props }
+}
 
-export default connect(mapStateToProps)(NavBar)
+export default connect(mapStateToProps, null)(NavBar)

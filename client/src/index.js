@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
+import { Route} from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory'
 
 /* * Utils * */
@@ -12,7 +13,7 @@ import 'react-hot-loader/patch'
 
 /* * App * */
 import store from './store/store'
-import app from './app'
+import App from './app'
 
 injectTapEventPlugin()
 
@@ -21,7 +22,7 @@ const history = createHistory()
 const consoleErrorReporter = ({error}) => <RedBox error={error} />
 
 /* * wrapping App.js in Provider component to allow access to our redux store * */
-const render = function (App) {
+const render = (App) => {
   ReactDOM.render(
     <AppContainer errorReporter={consoleErrorReporter}>
       <Provider store={store}>
@@ -34,7 +35,7 @@ const render = function (App) {
   )
 }
 
-render(app)
+render(App)
 
 if (module.hot) {
   module.hot.accept('./app.js', () => {

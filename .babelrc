@@ -5,6 +5,7 @@
     "react"
   ],
   "plugins": [
+    ['react-hot-loader'],
     ['lodash'],
     ['transform-decorators'],
     ['transform-decorators-legacy'],

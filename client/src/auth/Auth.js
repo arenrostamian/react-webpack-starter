@@ -1,9 +1,8 @@
+import { connect } from 'react-redux'
 import auth0 from 'auth0-js'
 import createHistory from 'history/createBrowserHistory'
 import { routeActions } from 'react-router-redux'
 import { AUTH_CONFIG } from './auth0-config'
-
-const history = createHistory()
 
 class Auth {
   auth0 = new auth0.WebAuth({
@@ -30,11 +29,10 @@ class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
-        history.replace('/home')
+        // route to home
       } else if (err) {
-        history.replace('/home')
         console.log(err)
-        alert(`Error: ${err.error}. Check the console for further details.`)
+        // route to home
       }
     })
   }
