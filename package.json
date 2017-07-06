@@ -4,14 +4,15 @@
   "description": "lamborghini mercy",
   "scripts": {
     "build": "node_modules/.bin/webpack -p --watch",
-    "rollout": "webpack-dev-server --watch --progress",
-    "start": "nodemon server/server.js",
+    "webpack": "webpack-dev-server --watch --progress",
+    "rollout": "node server/server.js",
     "style": "standard",
     "style:fix": "npm run style -- --fix"
   },
   "license": "MIT",
   "dependencies": {
     "api-npm": "^1.0.0",
+    "auth0-js": "^8.8.0",
     "axios": "^0.16.1",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-lodash": "^3.2.11",
@@ -97,7 +98,7 @@
     "webpack": "^2.5.1",
     "webpack-dev-middleware": "^1.8.4",
     "webpack-dev-server": "^2.4.2",
-    "webpack-hot-middleware": "^2.13.2",
+    "webpack-hot-middleware": "^2.18.1",
     "yargs": "^8.0.1"
   },
   "standard": {

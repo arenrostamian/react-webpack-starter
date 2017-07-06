@@ -1,9 +1,4 @@
 const api = require('api-npm')
-const baseConfig = require('./config')
-const firebase = require('firebase')
-
-const base = firebase.initializeApp(baseConfig)
-const baseDB = base.database()
 
 const getPackage = (packageName) => {
   return new Promise((resolve, reject) => {

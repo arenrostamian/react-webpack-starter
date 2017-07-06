@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-
-/* * Actions * */
-import { logout } from '../../store/modules/firebase'
+import { push } from 'react-router-redux'
 
 /* * Components * */
 import { SearchBar } from '../'
@@ -26,15 +23,14 @@ class NavBar extends Component {
 
   handleItemClick (event, { name }) {
     event.preventDefault()
+    console.log('store is ', store)
+    console.log('name is ', name)
     this.setState({ activeItem: name })
   }
 
   handleLogout (e, { name }) {
-    const { logout } = this.props
     e.preventDefault()
-    this.setState({ activeItem: name })
-    logout()
-    .then(() => this.context.router.history.push('/'))
+    console.log('log out')
   }
 
   render () {
@@ -56,8 +52,8 @@ class NavBar extends Component {
                 onClick={this.handleItemClick}
                 />
               <Menu.Item style={button}
-                name='LOG OUT'
-                active={activeItem === 'LOG OUT'}
+                name='LOG IN'
+                active={activeItem === 'LOG IN'}
                 onClick={this.handleLogout}
                 />
             </Menu.Menu>
@@ -71,10 +67,6 @@ class NavBar extends Component {
   }
 }
 
-NavBar.contextTypes = {
-  router: PropTypes.object
-}
-
 const mapStateToProps = null
 
-export default connect(mapStateToProps, { logout })(NavBar)
+export default connect(mapStateToProps)(NavBar)

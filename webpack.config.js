@@ -7,7 +7,7 @@ const DIST_DIR = path.join(__dirname, '/client/dist')
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
-    'react-hot-loader/patch',
+    'webpack-hot-middleware/client?path=http://localhost:1337/__webpack_hmr&timeout=20000',
     './client/src/index.js'
   ],
   output: {
@@ -42,6 +42,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new ExtractTextPlugin({ filename: 'css/[name].css', disable: false, allChunks: true })
   ],
   devServer: {
