@@ -1,22 +1,22 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, applyMiddleware } from 'redux'
+import { routerMiddleware, routerReducer } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
-import { routerMiddleware } from 'react-router-redux'
-
-import reducers from './reducers'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+import reducer from './reducers'
 
 const history = createHistory()
-const initialState = {}
+const initialState = {
+  routing: routerReducer
+}
 const routeMiddleware = routerMiddleware(history)
 
 /* * add middleware / enhancers here * */
-const middleware = [ routeMiddleware ]
+const middleware = [ routeMiddleware, thunk ]
 const enhancers = [ applyMiddleware(...middleware) ]
 
 const store = createStore(
-  combineReducers({
-    ...reducers
-  }),
+  reducer,
   initialState,
   composeWithDevTools(...enhancers)
 )

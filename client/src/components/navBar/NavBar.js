@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { push } from 'react-router-redux'
 
 /* * Components * */
 import { SearchBar } from '../'
@@ -20,22 +18,18 @@ class NavBar extends Component {
       searchInput: ''
     }
     this.handleItemClick = this.handleItemClick.bind(this)
-    this.handleLogout = this.handleLogout.bind(this)
+    this.handleAuthentication = this.handleAuthentication.bind(this)
   }
 
   handleItemClick (event, { name }) {
-    event.preventDefault()
     this.setState({ activeItem: name })
+    name === 'home' && this.props.history.push('/')
+    name === 'npm' && (window.location.href = 'https://www.npmjs.com/')
   }
 
-  handleLogout (e, { name }) {
-    // const { ownProps } = this.props
-    console.log('navbar', this)
-    const location = './profile'
-
-    // this.props.pushRoute({ location })
-    // two.dispatch(push('/profile'))
-    // console.log('log ', this.props)
+  handleAuthentication (e, { name }) {
+    this.setState({ activeItem: name })
+    this.props.history.push('/profile')
   }
 
   render () {
@@ -52,14 +46,14 @@ class NavBar extends Component {
                 onClick={this.handleItemClick}
                 />
               <Menu.Item style={button}
-                name='NPM'
-                active={activeItem === 'NPM'}
+                name='npm'
+                active={activeItem === 'npm'}
                 onClick={this.handleItemClick}
                 />
               <Menu.Item style={button}
-                name=' LOG IN'
-                active={activeItem === ' LOG IN'}
-                onClick={this.handleLogout}
+                name='get nomming'
+                active={activeItem === 'get nomming'}
+                onClick={this.handleAuthentication}
                 />
             </Menu.Menu>
           </Menu>
@@ -72,8 +66,8 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = (store, props) => {
-  return { store, props }
+const mapStateToProps = ({ search }) => {
+  return { search }
 }
 
 export default connect(mapStateToProps, null)(NavBar)

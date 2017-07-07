@@ -1,18 +1,17 @@
+require('react-hot-loader/patch')
+
 import React from 'react'
 import ReactDOM from 'react-dom'
+
+import { AppContainer } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
-import { Route} from 'react-router-dom'
-import createHistory from 'history/createBrowserHistory'
-
-/* * Utils * */
-import injectTapEventPlugin from 'react-tap-event-plugin'
-import { AppContainer } from 'react-hot-loader'
-import RedBox from 'redbox-react'
-import 'react-hot-loader/patch'
-
-/* * App * */
 import store from './store/store'
+
+import createHistory from 'history/createBrowserHistory'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import RedBox from 'redbox-react'
+
 import App from './app'
 
 injectTapEventPlugin()
