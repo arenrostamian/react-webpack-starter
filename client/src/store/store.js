@@ -1,24 +1,21 @@
 import { createStore, applyMiddleware } from 'redux'
-import { routerMiddleware, routerReducer } from 'react-router-redux'
-import createHistory from 'history/createBrowserHistory'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { persistStore, autoRehydrate } from 'redux-persist'
 import thunk from 'redux-thunk'
 import reducer from './reducers'
 
-const history = createHistory()
-const initialState = {
-  routing: routerReducer
-}
-const routeMiddleware = routerMiddleware(history)
-
 /* * add middleware / enhancers here * */
-const middleware = [ routeMiddleware, thunk ]
-const enhancers = [ applyMiddleware(...middleware) ]
+const middleware = [ thunk ]
+const enhancers = [ applyMiddleware(...middleware), autoRehydrate() ]
+
+const initialState = {}
 
 const store = createStore(
   reducer,
   initialState,
   composeWithDevTools(...enhancers)
 )
+
+persistStore(store)
 
 export default store

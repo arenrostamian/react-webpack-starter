@@ -1,29 +1,21 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-/* * Components * */
-import { NavBar } from './components'
-import {
-  Home,
-  UserProfile
-} from './containers'
+import Routes from './routes'
 
 class App extends Component {
   render () {
     return (
       <div>
-        <Route path='/' component={NavBar} />
-        <Route exact path='/' component={Home} />
-        <Route path='/profile' component={UserProfile} />
+        <Routes />
       </div>
     )
   }
 }
 
-const mapStateToProps = (store, props) => {
-  return { store, props }
+const mapStateToProps = ({ auth }) => {
+  return { auth }
 }
 
 export default withRouter(connect(mapStateToProps, null)(App))

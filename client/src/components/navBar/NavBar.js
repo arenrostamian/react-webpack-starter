@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
 
-/* * Components * */
+import { Link } from 'react-router-dom'
+import Auth from '../../auth/Auth'
+
+    /* * Components * */
 import { SearchBar } from '../'
 
-/* * Styles * */
+    /* * Styles * */
 import { Menu } from 'semantic-ui-react'
 import semanticStyle from './semantic-style'
 import style from '../../styles/nav-bar.css'
+
+const auth = new Auth()
 
 class NavBar extends Component {
   constructor () {
@@ -17,19 +21,18 @@ class NavBar extends Component {
       activeItem: 'home',
       searchInput: ''
     }
-    this.handleItemClick = this.handleItemClick.bind(this)
+    this.handleClick = this.handleClick.bind(this)
     this.handleAuthentication = this.handleAuthentication.bind(this)
   }
 
-  handleItemClick (event, { name }) {
-    this.setState({ activeItem: name })
-    name === 'home' && this.props.history.push('/')
-    name === 'npm' && (window.location.href = 'https://www.npmjs.com/')
+  handleClick (e, { id }) {
+    this.setState({ activeItem: id })
+    id === 'npmBtn' && (window.location.href = 'https://www.npmjs.com/')
   }
 
-  handleAuthentication (e, { name }) {
-    this.setState({ activeItem: name })
-    this.props.history.push('/profile')
+  handleAuthentication () {
+    this.setState({ activeItem: 'authBtn' })
+    auth.authenticate()
   }
 
   render () {
@@ -40,19 +43,36 @@ class NavBar extends Component {
         <div className={style.navigation}>
           <Menu pointing secondary>
             <Menu.Menu position='right'>
-              <Menu.Item style={button}
+              <Menu.Item
+                id='homeBtn'
+                style={button}
+                as={Link}
+                to='/om-nom-nom'
                 name='home'
-                active={activeItem === 'home'}
-                onClick={this.handleItemClick}
+                active={activeItem === 'homeBtn'}
+                onClick={this.handleClick}
                 />
-              <Menu.Item style={button}
+              <Menu.Item
+                id='npmBtn'
+                style={button}
                 name='npm'
-                active={activeItem === 'npm'}
-                onClick={this.handleItemClick}
+                active={activeItem === 'npmBtn'}
+                onClick={this.handleClick}
                 />
-              <Menu.Item style={button}
+              <Menu.Item
+                id='profileBtn'
+                style={button}
+                as={Link}
+                to='/you'
+                name='profile'
+                active={activeItem === 'profileBtn'}
+                onClick={this.handleClick}
+                />
+              <Menu.Item
+                id='authBtn'
+                style={button}
                 name='get nomming'
-                active={activeItem === 'get nomming'}
+                active={activeItem === 'authBtn'}
                 onClick={this.handleAuthentication}
                 />
             </Menu.Menu>
@@ -64,10 +84,10 @@ class NavBar extends Component {
       </div>
     )
   }
-}
+    }
 
-const mapStateToProps = ({ search }) => {
-  return { search }
+const mapStateToProps = ({ auth, search }) => {
+  return { auth, search }
 }
 
 export default connect(mapStateToProps, null)(NavBar)

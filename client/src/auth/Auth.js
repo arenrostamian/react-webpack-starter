@@ -1,7 +1,5 @@
-import { connect } from 'react-redux'
 import auth0 from 'auth0-js'
-import createHistory from 'history/createBrowserHistory'
-import { routeActions } from 'react-router-redux'
+import { Redirect } from 'react-router'
 import { AUTH_CONFIG } from './auth0-config'
 
 class Auth {
@@ -15,29 +13,51 @@ class Auth {
   })
 
   constructor () {
-    this.login = this.login.bind(this)
+    this.authenticate = this.authenticate.bind(this)
     this.logout = this.logout.bind(this)
     this.handleAuthentication = this.handleAuthentication.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
   }
-
-  login () {
+  authenticate () {
     this.auth0.authorize()
   }
 
   handleAuthentication () {
-    this.auth0.parseHash((err, authResult) => {
+    this.auth0.parseHash((error, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
-        // route to home
-      } else if (err) {
-        console.log(err)
-        // route to home
+        return <Redirect to='/om-nom-nom' />
+      }
+      if (error) {
+        console.log(error)
+        return <Redirect to='/om-nom-nom' />
       }
     })
   }
+
+  /* * Sets the time at which the access token will expire * */
+  setSession (authResult) {
+    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime())
+    localStorage.setItem('access_token', authResult.accessToken)
+    localStorage.setItem('id_token', authResult.idToken)
+    localStorage.setItem('expires_at', expiresAt)
+    return <Redirect to='/om-nom-nom' />
+  }
+
+  /* * Clears access token and ID from local storage * */
+  logout () {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('id_token')
+    localStorage.removeItem('expires_at')
+    // navigate to the home route
+    return <Redirect to='/' />
+  }
+
+  /* * Checks whether accss token has expired * */
+  isAuthenticated () {
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
+    return new Date().getTime() < expiresAt
+  }
 }
 
-const mapStateToProps = null
-
-export default connect(mapStateToProps, { routeActions })(Auth)
+export default Auth

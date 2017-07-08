@@ -1,11 +1,12 @@
-/* * Reducers * */
-import { searchReducer } from './modules/search'
 import { combineReducers } from 'redux'
-import { routerReducer } from 'react-router-redux'
+
+/* * Reducers * */
+import { authReducer } from './modules/auth'
+import { searchReducer } from './modules/search'
 
 const reducer = combineReducers({
-  search: searchReducer,
-  routing: routerReducer
+  auth: authReducer,
+  search: searchReducer
 })
 
 export default reducer
