@@ -1,74 +1,75 @@
 /* * Types * */
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
+export const REQUEST_LOGIN = 'REQUEST_LOGIN'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
+export const REQUEST_LOGOUT = 'REQUEST_LOGOUT'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 
 /* * Actions * */
 
-/* * Login * * */
-export const loginRequest = ({ creds }) => ({
-  type: LOGIN_REQUEST,
-  payload: { creds }
+export const requestLogin = () => ({
+  type: REQUEST_LOGIN
 })
 
-export const loginSuccess = ({ user }) => ({
+export const loginSuccess = ({ profile }) => ({
   type: LOGIN_SUCCESS,
-  payload: {authToken: user.id_token}
+  payload: {
+    user: {
+      name: profile.name,
+      nickname: profile.nickname,
+      picture: profile.picture,
+      email: profile.email,
+      user_id: profile.user_id
+    }
+  }
 })
 
-export const loginFailure = ({ message }) => ({
+export const loginFailure = ({ error }) => ({
   type: LOGIN_FAILURE,
-  payload: { message }
+  payload: { error }
 })
 
-/* * Logout * */
+export const requestLogout = () => ({
+  type: REQUEST_LOGOUT
+})
 
-export const logoutRequest = () => {
-  return { type: LOGOUT_REQUEST }
-}
-
-export const logoutSuccess = () => {
-  return { type: LOGOUT_SUCCESS }
-}
+export const logoutSuccess = () => ({
+  type: LOGOUT_SUCCESS
+})
 
 /* * Reducer * */
-const initialAuthState = {
-  isFetching: false,
-  isAuthenticated: !!localStorage.getItem('id_token')
-}
-export const authReducer = (state = initialAuthState, action) => {
+
+export const authReducer = (state = {}, action) => {
   switch (action.type) {
-    case LOGIN_REQUEST: {
-      const { creds } = action.payload
+    case REQUEST_LOGIN: {
       return {
         ...state,
         isFetching: true,
-        isAuthenticated: false,
-        user: creds
+        isAuthenticated: false
       }
     }
 
     case LOGIN_SUCCESS: {
+      const { user } = action.payload
       return {
         ...state,
         isFetching: false,
-        isAuthenticated: true
+        isAuthenticated: true,
+        user
       }
     }
 
     case LOGIN_FAILURE: {
-      const { message } = action.payload
+      const { error } = action.payload
+      console.log(`:( :( Login Failed: ${error}`)
       return {
         ...state,
         isFetching: false,
-        isAuthenticated: false,
-        errorMessage: message
+        isAuthenticated: false
       }
     }
 
-    case LOGOUT_REQUEST: {
+    case REQUEST_LOGOUT: {
       return {
         ...state,
         isFetching: true,
@@ -78,12 +79,11 @@ export const authReducer = (state = initialAuthState, action) => {
 
     case LOGOUT_SUCCESS: {
       return {
-        ...state,
         isFetching: false,
         isAuthenticated: false,
         user: null
       }
     }
-    default: return initialAuthState
+    default: return state
   }
 }

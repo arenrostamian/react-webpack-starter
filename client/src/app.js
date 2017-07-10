@@ -18,4 +18,4 @@ const mapStateToProps = ({ auth }) => {
   return { auth }
 }
 
-export default withRouter(connect(mapStateToProps, null)(App))
+export default connect(mapStateToProps, null)(App)

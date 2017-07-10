@@ -1,2 +1,2 @@
-export { loginRequest, loginSuccess, loginFailure, logoutRequest, logoutFailure } from './modules/auth'
+export { requestLogin, loginSuccess, loginFailure, requestLogout, logoutSuccess } from './modules/auth'
 export { setSearchResults } from './modules/search'

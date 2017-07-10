@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
 import { Link } from 'react-router-dom'
 import Auth from '../../auth/Auth'
 
@@ -30,28 +29,32 @@ class NavBar extends Component {
     id === 'npmBtn' && (window.location.href = 'https://www.npmjs.com/')
   }
 
-  handleAuthentication () {
+  handleAuthentication (e, { id }) {
     this.setState({ activeItem: 'authBtn' })
-    auth.authenticate()
+    id === 'authenticateBtn' && auth.authenticate()
+    id === 'logoutBtn' && auth.logout()
   }
 
   render () {
     const { activeItem } = this.state
     const { button } = semanticStyle
+    const { isAuthenticated } = this.props.auth
     return (
       <div className={style.container}>
         <div className={style.navigation}>
           <Menu pointing secondary>
-            <Menu.Menu position='right'>
+            <Menu.Menu position='left'>
               <Menu.Item
                 id='homeBtn'
                 style={button}
                 as={Link}
-                to='/om-nom-nom'
+                to='/'
                 name='home'
                 active={activeItem === 'homeBtn'}
                 onClick={this.handleClick}
                 />
+            </Menu.Menu>
+            <Menu.Menu position='right'>
               <Menu.Item
                 id='npmBtn'
                 style={button}
@@ -63,15 +66,15 @@ class NavBar extends Component {
                 id='profileBtn'
                 style={button}
                 as={Link}
-                to='/you'
+                to='/profile'
                 name='profile'
                 active={activeItem === 'profileBtn'}
                 onClick={this.handleClick}
                 />
               <Menu.Item
-                id='authBtn'
+                id={isAuthenticated ? 'logoutBtn' : 'authenticateBtn'}
                 style={button}
-                name='get nomming'
+                name={isAuthenticated ? 'log out' : 'nom'}
                 active={activeItem === 'authBtn'}
                 onClick={this.handleAuthentication}
                 />

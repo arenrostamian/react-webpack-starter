@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom'
 /* * Routing / State * */
 import { AppContainer } from 'react-hot-loader'
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
 import store from './store/store'
 import App from './App'
 
@@ -22,9 +21,7 @@ const omNomNom = (App) => {
   ReactDOM.render(
     <AppContainer errorReporter={consoleErrorReporter}>
       <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <App />
       </Provider>
     </AppContainer>,
     document.getElementById('root')

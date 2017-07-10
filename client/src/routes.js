@@ -1,5 +1,7 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Redirect } from 'react-router'
+import { Route, HashRouter } from 'react-router-dom'
+import Auth from './auth/Auth'
 
 /* * Components * */
 import { NavBar } from './components'
@@ -8,12 +10,22 @@ import {
   UserProfile
 } from './containers'
 
+const auth = new Auth()
+
+const checkAuthentication = () => (
+  auth.isAuthenticated()
+  ? <UserProfile />
+  : <Redirect to='/' />
+)
+
 const Routes = () => (
-  <div>
-    <Route path='/' component={NavBar} />
-    <Route path='/om-nom-nom' component={Home} />
-    <Route path='/you' component={UserProfile} />
-  </div>
+  <HashRouter>
+    <div>
+      <Route path='/' component={NavBar} />
+      <Route exact path='/' component={Home} />
+      <Route path='/profile' render={checkAuthentication} />
+    </div>
+  </HashRouter>
 )
 
 export default Routes

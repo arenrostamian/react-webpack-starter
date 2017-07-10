@@ -24,6 +24,10 @@ app.use(require('webpack-hot-middleware')(compiler))
 
 app.use(express.static(path.join(__dirname, '../client/dist')))
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+})
+
 app.listen(1337, () => {
   console.log(`nomming at 1337, nomomsayin?`)
 })
