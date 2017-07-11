@@ -1,7 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import { Route, HashRouter } from 'react-router-dom'
-import Auth from './auth/Auth'
 
 /* * Components * */
 import { NavBar } from './components'
@@ -10,22 +10,25 @@ import {
   UserProfile
 } from './containers'
 
-const auth = new Auth()
-
-const checkAuthentication = () => (
-  auth.isAuthenticated()
-  ? <UserProfile />
-  : <Redirect to='/' />
+const checkAuthentication = ({ isAuthenticated }) => (
+  isAuthenticated ? <UserProfile /> : <Redirect to='/' />
 )
 
-const Routes = () => (
-  <HashRouter>
-    <div>
-      <Route path='/' component={NavBar} />
-      <Route exact path='/' component={Home} />
-      <Route path='/profile' render={checkAuthentication} />
-    </div>
-  </HashRouter>
-)
+const Routes = (props) => {
+  const { auth } = props
+  return (
+    <HashRouter>
+      <div>
+        <Route path='/' component={NavBar} />
+        <Route exact path='/' component={Home} />
+        <Route path='/profile' render={() => checkAuthentication(auth)} />
+      </div>
+    </HashRouter>
+  )
+}
 
-export default Routes
+const mapStateToProps = ({ auth }) => {
+  return { auth }
+}
+
+export default connect(mapStateToProps, null)(Routes)

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router'
 import Auth0Lock from 'auth0-lock'
-import auth0 from 'auth0-js'
 
 import { AUTH_CONFIG, configOptions } from './auth0-config'
 import store from '../store/store'
@@ -13,15 +12,6 @@ import {
   logoutSuccess
 } from '../store/actions'
 
-const auth = new auth0.WebAuth({
-  domain: AUTH_CONFIG.domain,
-  clientID: AUTH_CONFIG.clientId,
-  redirectUri: AUTH_CONFIG.callbackUrl,
-  audience: `https://${AUTH_CONFIG.domain}/userinfo`,
-  responseType: 'token id_token',
-  scope: 'openid'
-})
-
 const AuthLock = new Auth0Lock(
   AUTH_CONFIG.clientId,
   AUTH_CONFIG.domain,
@@ -32,13 +22,14 @@ class Auth {
   constructor () {
     AuthLock.on('authenticated', (authResult) => {
       AuthLock.getUserInfo(authResult.accessToken, (error, profile) => {
-        !error
-        ? this.handleAuthentication(authResult, profile)
-        : store.dispatch(loginFailure({ error }))
+        if (error) {
+          store.dispatch(loginFailure({ error }))
+        } else {
+          this.setSession(authResult, profile)
+        }
       })
     })
     this.authenticate = this.authenticate.bind(this)
-    this.handleAuthentication = this.handleAuthentication.bind(this)
     this.setSession = this.setSession.bind(this)
     this.logout = this.logout.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
@@ -49,10 +40,6 @@ class Auth {
     AuthLock.show()
   }
 
-  handleAuthentication (authResult, profile) {
-    this.setSession(authResult, profile)
-  }
-
   /* * Sets the time at which the access token will expire * */
   setSession (authResult, profile) {
     const { accessToken, idToken, idTokenPayload } = authResult
@@ -60,7 +47,7 @@ class Auth {
     localStorage.setItem('access_token', accessToken)
     localStorage.setItem('id_token', idToken)
     localStorage.setItem('expires_at', expiresAt)
-    store.dispatch(loginSuccess({ profile }))
+    store.dispatch(loginSuccess({ profile: profile }))
   }
 
   logout () {

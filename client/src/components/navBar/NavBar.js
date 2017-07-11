@@ -43,7 +43,7 @@ class NavBar extends Component {
       <div className={style.container}>
         <div className={style.navigation}>
           <Menu pointing secondary>
-            <Menu.Menu position='left'>
+            <Menu.Menu>
               <Menu.Item
                 id='homeBtn'
                 style={button}
@@ -62,15 +62,18 @@ class NavBar extends Component {
                 active={activeItem === 'npmBtn'}
                 onClick={this.handleClick}
                 />
-              <Menu.Item
-                id='profileBtn'
-                style={button}
-                as={Link}
-                to='/profile'
-                name='profile'
-                active={activeItem === 'profileBtn'}
-                onClick={this.handleClick}
-                />
+              {
+                  isAuthenticated &&
+                  <Menu.Item
+                    id='profileBtn'
+                    style={button}
+                    as={Link}
+                    to='/profile'
+                    name='profile'
+                    active={activeItem === 'profileBtn'}
+                    onClick={this.handleClick}
+                    />
+              }
               <Menu.Item
                 id={isAuthenticated ? 'logoutBtn' : 'authenticateBtn'}
                 style={button}
