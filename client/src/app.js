@@ -1,17 +1,31 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router'
+import 'react-hot-loader/patch'
+import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
+import { Route, HashRouter } from 'react-router-dom'
 
-import Routes from './routes'
+/* * components * */
+import { NavBar } from './components'
+import {
+  Home,
+  UserProfile
+} from './containers'
 
-class App extends Component {
-  render () {
-    return (
+const checkAuthentication = ({ isAuthenticated }) => (
+  isAuthenticated ? <UserProfile /> : <Redirect to='/' />
+)
+
+const App = (props) => {
+  const { auth } = props
+  return (
+    <HashRouter>
       <div>
-        <Routes />
+        <Route path='/' component={NavBar} />
+        <Route exact path='/' component={Home} />
+        <Route path='/profile' render={() => checkAuthentication(auth)} />
       </div>
-    )
-  }
+    </HashRouter>
+  )
 }
 
 const mapStateToProps = ({ auth }) => {

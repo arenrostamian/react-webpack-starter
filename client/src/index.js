@@ -1,38 +1,39 @@
+import 'react-hot-loader/patch'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 
 /* * Routing / State * */
 import { AppContainer } from 'react-hot-loader'
-import { Provider } from 'react-redux'
 import store from './store/store'
 import App from './App'
 
 /* * Utils * */
 import injectTapEventPlugin from 'react-tap-event-plugin'
-import RedBox from 'redbox-react'
+import Redbox from 'redbox-react'
 
-require('react-hot-loader/patch')
 injectTapEventPlugin()
 
-const consoleErrorReporter = ({error}) => <RedBox error={error} />
+const consoleErrorReporter = ({error}) => <Redbox error={error} />
 
 /* * wrapping App.js in Provider component to allow access to our redux store * */
-const omNomNom = (App) => {
-  ReactDOM.render(
-    <AppContainer errorReporter={consoleErrorReporter}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </AppContainer>,
-    document.getElementById('root')
-  )
-}
-
-omNomNom(App)
+ReactDOM.render(
+  <AppContainer errorReporter={consoleErrorReporter}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </AppContainer>,
+  document.getElementById('root')
+)
 
 if (module.hot) {
   module.hot.accept('./App.js', () => {
-    const hotApp = require('./App.js').default
-    omNomNom(hotApp)
+    const HotApp = require('./App.js').default
+    ReactDOM.render(
+      <AppContainer>
+        <HotApp />
+      </AppContainer>,
+      document.getElementById('root')
+    )
   })
 }

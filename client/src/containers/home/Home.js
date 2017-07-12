@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router'
 import style from '../../styles/components.css'
 
 class Home extends Component {
@@ -11,4 +12,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default withRouter(Home)

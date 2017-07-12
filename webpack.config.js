@@ -1,16 +1,12 @@
 const path = require('path')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const SRC_DIR = path.join(__dirname, '/client/src')
 const DIST_DIR = path.join(__dirname, '/client/dist')
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
-  entry: [
-    'webpack-hot-middleware/client?path=http://localhost:1337/__webpack_hmr&timeout=20000',
-    './client/src/index.js'
-  ],
+  devtool: 'eval',
+  entry: path.join(SRC_DIR, '/index.js'),
   output: {
     path: DIST_DIR,
     filename: 'bundle.js',
@@ -18,38 +14,35 @@ module.exports = {
     devtoolModuleFilenameTemplate: SRC_DIR
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(jsx|js)?$/,
-        loaders: ['babel-loader?cacheDirectory=true'],
+        use: {
+          loader: 'babel-loader?cacheDirectory=true',
+          options: { ignore: '/node_modules/' }
+        },
         include: SRC_DIR
       },
       {
         test: /\.css$/,
-        exclude: /node_modules/,
         use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: { modules: true }
-          }
-        ],
-        include: SRC_DIR
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: {modules: true} }
+        ]
       }
     ]
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new ExtractTextPlugin({ filename: 'css/[name].css', disable: false, allChunks: true })
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   devServer: {
-    inline: true,
+    compress: true,
     contentBase: DIST_DIR,
+    historyApiFallback: true,
     hot: true,
-    historyApiFallback: true
+    inline: true,
+    watchContentBase: true
   }
 }

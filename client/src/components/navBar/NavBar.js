@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import Auth from '../../auth/Auth'
 
@@ -94,4 +95,4 @@ const mapStateToProps = ({ auth, search }) => {
   return { auth, search }
 }
 
-export default connect(mapStateToProps, null)(NavBar)
+export default withRouter(connect(mapStateToProps, null)(NavBar))
