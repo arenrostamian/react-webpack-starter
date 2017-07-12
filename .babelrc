@@ -14,11 +14,6 @@
     ['transform-class-properties'],
     ['transform-react-display-name'],
     ['syntax-dynamic-import']
-  ],
-  "env": {
-    "test": {
-      "presets": ["es2017", "react", "stage-0"]
-    }
-  }
+  ]
 }
 

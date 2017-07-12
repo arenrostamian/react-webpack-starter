@@ -1,4 +1,4 @@
-export const semanticStyle = {
+export const navBarStyle = {
   button: {
     color: 'white',
     fontSize: '12px',
@@ -7,4 +7,7 @@ export const semanticStyle = {
   }
 }
 
-export default semanticStyle
+export const searchDropdownStyle = {
+  backgroundColor: 'pink',
+  width: '80px'
+}

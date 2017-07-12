@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Auth from '../../auth/Auth'
 
-    /* * Components * */
+/* * Components * */
 import { SearchBar } from '../'
 
-    /* * Styles * */
+/* * Styles * */
 import { Menu } from 'semantic-ui-react'
-import semanticStyle from './semantic-style'
+import { navBarStyle } from '../../styles/semantic-style'
 import style from '../../styles/nav-bar.css'
 
 const auth = new Auth()
@@ -37,7 +37,7 @@ class NavBar extends Component {
 
   render () {
     const { activeItem } = this.state
-    const { button } = semanticStyle
+    const { button } = navBarStyle
     const { isAuthenticated } = this.props.auth
     return (
       <div className={style.container}>
@@ -52,7 +52,7 @@ class NavBar extends Component {
                 name='home'
                 active={activeItem === 'homeBtn'}
                 onClick={this.handleClick}
-                />
+              />
             </Menu.Menu>
             <Menu.Menu position='right'>
               <Menu.Item
@@ -61,7 +61,7 @@ class NavBar extends Component {
                 name='npm'
                 active={activeItem === 'npmBtn'}
                 onClick={this.handleClick}
-                />
+              />
               {
                   isAuthenticated &&
                   <Menu.Item
@@ -72,7 +72,7 @@ class NavBar extends Component {
                     name='profile'
                     active={activeItem === 'profileBtn'}
                     onClick={this.handleClick}
-                    />
+                  />
               }
               <Menu.Item
                 id={isAuthenticated ? 'logoutBtn' : 'authenticateBtn'}
@@ -80,17 +80,15 @@ class NavBar extends Component {
                 name={isAuthenticated ? 'log out' : 'nom'}
                 active={activeItem === 'authBtn'}
                 onClick={this.handleAuthentication}
-                />
+              />
             </Menu.Menu>
           </Menu>
         </div>
-        <div className={style.search}>
-          <SearchBar />
-        </div>
+        <SearchBar />
       </div>
     )
   }
-    }
+}
 
 const mapStateToProps = ({ auth, search }) => {
   return { auth, search }

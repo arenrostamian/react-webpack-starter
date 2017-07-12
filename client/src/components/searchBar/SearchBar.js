@@ -2,15 +2,25 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { packages } from '../../../assets/mockData'
 
+/* * Utils * */
+import axios from 'axios'
+
 /* * Actions * */
 import { setSearchResults } from '../../store/modules/search'
 
 /* * Components * */
 import Autosuggest from 'react-autosuggest'
+import { Dropdown, Button } from 'semantic-ui-react'
 
 /* * Styles * */
 import style from '../../styles/nav-bar.css'
-import autosuggestStyle from './autosuggest-style'
+import { searchDropdownStyle } from '../../styles/semantic-style'
+import reactAutosuggestStyle from '../../styles/react-autosuggest-style'
+
+const searchOptions = [
+  { key: 'name', text: 'name', value: 'name' },
+  { key: 'keyword', text: 'type', value: 'keyword' }
+]
 
 const getSuggestionValue = (suggestion) => suggestion.name
 
@@ -25,20 +35,40 @@ class SearchBar extends Component {
   constructor () {
     super()
     this.state = {
+      searchType: 'name',
       value: '',
       id: null,
       suggestions: [],
       hover: false
     }
+    this.setSearchType = this.setSearchType.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
     this.getSuggestions = this.getSuggestions.bind(this)
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
   }
 
-  onChange (e, { newValue }) {
+  setSearchType (e, { value }) {
+    this.setState({ searchType: value })
+  }
+
+  onChange (e, { newValue, method }) {
     this.setState({ value: newValue })
+  }
+
+  handleSearch () {
+    const { searchType, value } = this.state
+    axios.get('/api/npm/search', {
+      params: { searchType, value }
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
 
   onSuggestionsFetchRequested ({ value }) {
@@ -71,12 +101,13 @@ class SearchBar extends Component {
     const inputProps = {
       placeholder: 'nom',
       value,
-      onChange: this.onChange
+      onChange: this.onChange,
+      type: 'search'
     }
     return (
       <div className={style.search}>
         <Autosuggest
-          theme={autosuggestStyle}
+          theme={reactAutosuggestStyle}
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -84,12 +115,20 @@ class SearchBar extends Component {
           renderSuggestion={renderSuggestion}
           onSuggestionSelected={this.onSuggestionSelected}
           inputProps={inputProps}
+          onEnter={this.onEnter}
+        />
+        <Button onClick={this.handleSearch}>search</Button>
+        <Dropdown fluid selection
+          style={searchDropdownStyle}
+          options={searchOptions}
+          onChange={this.setSearchType}
+          placeholder='nom'
+          defaultValue='name'
           />
       </div>
     )
   }
 }
-
 // const mapStateToProps = ({ user, friends }) => {
 //   return { user, friends }
 // }

@@ -1,6 +1,6 @@
-const autosuggestStyle = {
+const reactAutosuggestStyle = {
   input: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     border: '1px solid white',
     color: '#2a333c',
     fontSize: '15px',
@@ -44,4 +44,4 @@ const autosuggestStyle = {
   }
 }
 
-export default autosuggestStyle
+export default reactAutosuggestStyle

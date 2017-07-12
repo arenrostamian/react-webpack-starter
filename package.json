@@ -26,6 +26,7 @@
     "firebaseui": "^1.0.1",
     "history": "^4.6.3",
     "material-ui": "^0.18.3",
+    "npm-registry": "^0.1.13",
     "object-assign": "^4.1.1",
     "promise": "^7.1.1",
     "prop-types": "^15.5.10",

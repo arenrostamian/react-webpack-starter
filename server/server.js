@@ -10,6 +10,9 @@ const webpack = require('webpack')
 const webpackConfig = require('../webpack.config')
 const compiler = webpack(webpackConfig)
 
+/* * utils * */
+const { npmGetPackage } = require('./utils')
+
 const app = express()
 
 app.use(compress())
@@ -23,6 +26,8 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(require('webpack-hot-middleware')(compiler))
 
 app.use(express.static(path.join(__dirname, '../client/dist')))
+
+app.get('/api/npm/search', npmGetPackage)
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'))
