@@ -18,7 +18,6 @@
     "compression": "^1.6.2",
     "express": "^4.15.2",
     "history": "^4.6.3",
-    "npm-registry": "^0.1.13",
     "object-assign": "^4.1.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",

@@ -8,7 +8,9 @@ import reducer from './reducers'
 const middleware = [ thunk ]
 const enhancers = [ applyMiddleware(...middleware), autoRehydrate() ]
 
-const initialState = {}
+const initialState = {
+  auth: { isAuthenticated: false }
+}
 
 const store = createStore(
   reducer,

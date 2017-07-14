@@ -7,12 +7,13 @@ import { Route, HashRouter } from 'react-router-dom'
 /* * components * */
 import { NavBar } from './components'
 import {
-  Home,
-  UserProfile
+  HomePage,
+  ProfilePage,
+  ViewPackagePage
 } from './containers'
 
 const checkAuthentication = ({ isAuthenticated }) => (
-  isAuthenticated ? <UserProfile /> : <Redirect to='/' />
+  isAuthenticated ? <ProfilePage /> : <Redirect to='/' />
 )
 
 const App = (props) => {
@@ -21,7 +22,8 @@ const App = (props) => {
     <HashRouter>
       <div>
         <Route path='/' component={NavBar} />
-        <Route exact path='/' component={Home} />
+        <Route exact path='/' component={HomePage} />
+        <Route path='/package-details' component={ViewPackagePage} />
         <Route path='/profile' render={() => checkAuthentication(auth)} />
       </div>
     </HashRouter>

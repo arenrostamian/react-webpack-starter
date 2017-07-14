@@ -2,20 +2,22 @@
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS'
 
 /* * Actions * */
-export const setSearchResults = ({ packageID }) => ({
+export const setSearchResults = ({ selectedPackage }) => ({
   type: SET_SEARCH_RESULTS,
-  payload: { packageID }
+  payload: { selectedPackage }
 })
 
 /* * Reducer * */
 export const searchReducer = (state = {}, action) => {
   switch (action.type) {
     case SET_SEARCH_RESULTS: {
-      const newState = Object.assign({}, state)
-      const { packageID } = action.payload
-      newState.packageID = packageID
-      return newState
+      const { selectedPackage } = action.payload
+      return {
+        ...state,
+        selectedPackage
+      }
     }
+
     default: return state
   }
 }

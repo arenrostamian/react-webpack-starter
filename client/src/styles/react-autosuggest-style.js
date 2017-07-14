@@ -41,6 +41,12 @@ const reactAutosuggestStyle = {
   },
   suggestionHighlighted: {
     color: '#c12127'
+  },
+  suggestionName: {
+    fontSize: '15px'
+  },
+  suggestionDescription: {
+    fontSize: '10px'
   }
 }
 

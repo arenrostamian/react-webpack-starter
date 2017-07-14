@@ -1,11 +1,9 @@
 const { getPackageByName, getPackagesByKeyword } = require('./npmUtils/NpmQuery')
 
 exports.npmGetPackage = (req, res) => {
-  console.log('npm get package')
-  const { searchType, value } = req.query
-  getPackageByName(value)
-  .then(response => {
-    console.log('response ', response)
-    res.status(200).send(response)
-  })
+  const { searchType, searchTerm } = req.query
+  const npmQuery = searchType === 'name' ? getPackageByName : getPackagesByKeyword
+  // try querying npm api https://www.npmjs.com/search?q=promise
+  npmQuery(searchTerm)
+  .then(npmRes => res.status(200).send(npmRes))
 }

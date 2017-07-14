@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { packages } from '../../../assets/mockData'
 
 /* * Utils * */
-import axios from 'axios'
+import { withRouter } from 'react-router'
+import { searchSuggestions, getPackageInfo, getPackagesByKeyword } from '../../utils/npmSearch'
 
 /* * Actions * */
-import { setSearchResults } from '../../store/modules/search'
+import { setSearchResults } from '../../store/actions'
 
 /* * Components * */
 import Autosuggest from 'react-autosuggest'
@@ -22,12 +22,14 @@ const searchOptions = [
   { key: 'keyword', text: 'type', value: 'keyword' }
 ]
 
+const { suggestionName, suggestionDescription } = reactAutosuggestStyle
+
 const getSuggestionValue = (suggestion) => suggestion.name
 
-const renderSuggestion = (suggestion) => (
-  <div
-    style={{color: suggestion.color}}>
-    {suggestion.name}
+const renderSuggestion = ({ name, description }) => (
+  <div>
+    <div style={suggestionName}>{name}</div>
+    <div style={suggestionDescription}>{description}</div>
   </div>
 )
 
@@ -36,7 +38,7 @@ class SearchBar extends Component {
     super()
     this.state = {
       searchType: 'name',
-      value: '',
+      searchTerm: '',
       id: null,
       suggestions: [],
       hover: false
@@ -46,7 +48,6 @@ class SearchBar extends Component {
     this.handleSearch = this.handleSearch.bind(this)
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
-    this.getSuggestions = this.getSuggestions.bind(this)
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
   }
 
@@ -55,52 +56,44 @@ class SearchBar extends Component {
   }
 
   onChange (e, { newValue, method }) {
-    this.setState({ value: newValue })
+    this.setState({ searchTerm: newValue })
   }
 
   handleSearch () {
-    const { searchType, value } = this.state
-    axios.get('/api/npm/search', {
-      params: { searchType, value }
-    })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    const { setSearchResults, history } = this.props
+    const { searchType, searchTerm } = this.state
+    if (searchType === 'name') {
+      getPackageInfo(searchTerm)
+      .then(selectedPackage => setSearchResults({ selectedPackage }))
+      .catch(error => console.log(error))
+      history.push('/package-details')
+    } else {
+      getPackagesByKeyword(searchTerm)
+      .then(packages => setSearchResults({ }))
+    }
   }
 
   onSuggestionsFetchRequested ({ value }) {
-    this.setState({
-      suggestions: this.getSuggestions(value)
-    })
+    searchSuggestions(value)
+    .then(suggestions => this.setState({ suggestions }))
+    .catch(error => console.log(error))
   }
 
   onSuggestionsClearRequested () {
     this.setState({ suggestions: [] })
   }
 
-  getSuggestions (value) {
-    const inputValue = value.trim().toLowerCase()
-    const inputLength = inputValue.length
-
-    return inputLength === 0 ? [] : packages.filter(pckg => {
-      return pckg.name && pckg.name.toLowerCase().slice(0, inputLength) === inputValue
-    })
-  }
-
   onSuggestionSelected (e, { suggestion }) {
-    const { packageID } = suggestion
-    const { setSearchResults } = this.props
-    setSearchResults({packageID})
+    const { setSearchResults, history } = this.props
+    setSearchResults({ selectedPackage: suggestion })
+    history.push('/package-details')
   }
 
   render () {
-    const { value, suggestions } = this.state
+    const { searchTerm, suggestions } = this.state
     const inputProps = {
       placeholder: 'nom',
-      value,
+      value: searchTerm,
       onChange: this.onChange,
       type: 'search'
     }
@@ -133,4 +126,4 @@ class SearchBar extends Component {
 //   return { user, friends }
 // }
 
-export default connect(null, { setSearchResults })(SearchBar)
+export default withRouter(connect(null, { setSearchResults })(SearchBar))

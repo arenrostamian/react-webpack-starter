@@ -1,2 +1,3 @@
-export Home from './home/Home'
-export UserProfile from './userProfile/UserProfile'
+export HomePage from './homePage/HomePage'
+export ViewPackagePage from './viewPackagePage/ViewPackagePage'
+export ProfilePage from './profilePage/ProfilePage'

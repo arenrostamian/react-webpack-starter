@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import style from '../../styles/components.css'
 
-class Home extends Component {
+class HomePage extends Component {
   render () {
     return (
       <div className={style.home}>
@@ -12,4 +12,4 @@ class Home extends Component {
   }
 }
 
-export default withRouter(Home)
+export default withRouter(HomePage)
