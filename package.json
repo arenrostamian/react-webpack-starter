@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "lamborghini mercy",
   "scripts": {
+    "build": "node_modules/.bin/webpack -p --watch",
     "rollout": "webpack-dev-server --watch --progress",
     "start": "nodemon ./server/server.js",
     "style": "standard",
@@ -18,6 +19,7 @@
     "compression": "^1.6.2",
     "express": "^4.15.2",
     "history": "^4.6.3",
+    "knex": "^0.13.0",
     "object-assign": "^4.1.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
@@ -37,6 +39,7 @@
     "semantic-ui-react": "^0.70.0"
   },
   "devDependencies": {
+    "aws-sdk": "^2.84.0",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",

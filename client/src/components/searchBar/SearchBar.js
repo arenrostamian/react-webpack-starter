@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 /* * Utils * */
+import axios from 'axios'
 import { withRouter } from 'react-router'
 import { searchSuggestions, getPackageInfo, getPackagesByKeyword } from '../../utils/npmSearch'
 
@@ -49,6 +50,8 @@ class SearchBar extends Component {
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
+    /* * testing dynamoDB * */
+    this.ddbTest = this.ddbTest.bind(this)
   }
 
   setSearchType (e, { value }) {
@@ -86,7 +89,19 @@ class SearchBar extends Component {
   onSuggestionSelected (e, { suggestion }) {
     const { setSearchResults, history } = this.props
     setSearchResults({ selectedPackage: suggestion })
-    history.push('/package-details')
+    history.push(`/package-details/${suggestion.name}`)
+  }
+
+  /* * testing dynamoDB * */
+  ddbTest () {
+    const params = {
+      name: 'redux',
+      vote: 1,
+      comment: 'yas queen'
+    }
+    axios.get('/add-package', { params })
+    .then(res => console.log('ddb test res is ', res))
+    .catch(error => console.log('oops error ', error))
   }
 
   render () {
@@ -110,7 +125,7 @@ class SearchBar extends Component {
           inputProps={inputProps}
           onEnter={this.onEnter}
         />
-        <Button onClick={this.handleSearch}>search</Button>
+        <Button onClick={this.ddbTest}>testing</Button>
         <Dropdown fluid selection
           style={searchDropdownStyle}
           options={searchOptions}

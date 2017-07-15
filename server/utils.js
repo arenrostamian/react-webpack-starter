@@ -1,9 +1,22 @@
-const { getPackageByName, getPackagesByKeyword } = require('./npmUtils/NpmQuery')
+const { ddbAddPackage, ddbGetPackage, ddbUpdatePackage } = require('./ddbUtils/packageUtils')
 
-exports.npmGetPackage = (req, res) => {
-  const { searchType, searchTerm } = req.query
-  const npmQuery = searchType === 'name' ? getPackageByName : getPackagesByKeyword
-  // try querying npm api https://www.npmjs.com/search?q=promise
-  npmQuery(searchTerm)
-  .then(npmRes => res.status(200).send(npmRes))
+exports.addPackage = (req, res) => {
+  const packageDetails = req.query
+  ddbAddPackage(packageDetails)
+  .then(() => res.status(200).send())
+  .catch(error => console.log('add package error', error))
+}
+
+exports.getPackage = (req, res) => {
+  const { packageName } = req.query
+  ddbGetPackage(packageName)
+  .then(item => res.status(200).send(item))
+  .catch(error => console.log(error))
+}
+
+exports.updatePackage = (req, res) => {
+  const { packageName, detailsToUpdate } = req.query
+  ddbUpdatePackage(packageName, detailsToUpdate)
+  .then(() => res.status(200).send())
+  .catch(error => console.log(error))
 }
