@@ -4,7 +4,7 @@
   "description": "lamborghini mercy",
   "scripts": {
     "build": "node_modules/.bin/webpack -p --watch",
-    "rollout": "webpack-dev-server --watch --progress",
+    "rollout": "webpack-dev-server --colors --progress",
     "start": "nodemon ./server/server.js",
     "style": "standard",
     "style:fix": "npm run style -- --fix"

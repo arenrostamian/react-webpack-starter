@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const compress = require('compression')
 const bodyParser = require('body-parser')
 const path = require('path')
@@ -9,6 +10,7 @@ const DIST_DIR = path.join(__dirname, '../client/dist')
 
 const app = express()
 
+// app.use(cors())
 app.use(compress())
 // app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))

@@ -32,12 +32,14 @@ exports.ddbGetPackage = (packageName) => {
   }
   return new Promise((resolve, reject) => {
     ddbClient.get(params, (error, data) => {
-      error ? reject(error) : resolve(data.Item)
+      const { comments, score } = data.Item
+      error ? reject(error) : resolve({ comments, score })
     })
   })
 }
 
-exports.ddbUpdatePackage = (packageName, detailsToUpdate) => {
+exports.ddbUpdatePackage = ({ packageName, detailsToUpdate }) => {
+  console.log('ddb update package ', packageName, detailsToUpdate)
   const { vote, comment } = detailsToUpdate
   const params = {
     TableName: tableName,
@@ -45,7 +47,7 @@ exports.ddbUpdatePackage = (packageName, detailsToUpdate) => {
     UpdateExpression: 'add comments = :c, package-score = package-score + :v',
     ExpressionAttributeValues: {
       ':c': comment,
-      ':v': vote
+      ':v': vote > 0
     },
     ReturnValues: 'UPDATED_NEW'
   }

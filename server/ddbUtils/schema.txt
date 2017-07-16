@@ -1,0 +1,61 @@
+commentObject = {
+  username: string,
+  text: string,
+  timestamp: Date.now(),
+  score: int
+}
+
+/**
+  * ADD PACKAGE
+  */
+
+REQUEST // packageDetails = {
+  name: string,
+  vote: int,
+  comment: commentObject
+}
+
+params = {
+  TableName: 'npm-packages',
+  Item: {
+    'package-name': string,
+    'package-score': int || 0 ,
+    'comments': comment ? [ commentObject ] : []
+  }
+}
+
+/**
+  * GET PACKAGE
+  */
+
+REQUEST // packageName = string
+
+params = {
+    TableName: 'npm-packages',
+    Key: { 'package-name': string },
+    AttributesToGet: ['package-score', 'comments']
+  }
+
+/**
+ * UPDATE PACKAGE
+ */
+
+REQUEST // {
+  packageName: string,
+  detailsToUpdate: {
+    vote: int,
+    comment: commentObject
+  }
+}
+
+params = {
+  TableName: 'npm-packages',
+  Key: { 'package-name': string },
+  UpdateExpression: 'add comments = :c, package-score = package-score + :v',
+  ExpressionAttributeValues: {
+    ':c': commentObject,
+    ':v': int
+  },
+  ReturnValues: 'UPDATED_NEW'
+}
+

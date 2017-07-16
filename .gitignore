@@ -1,3 +1,4 @@
+server/ddbUtils/config.json
 .DS_STORE
 *.log
 node_modules

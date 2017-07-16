@@ -15,8 +15,7 @@ exports.getPackage = (req, res) => {
 }
 
 exports.updatePackage = (req, res) => {
-  const { packageName, detailsToUpdate } = req.query
-  ddbUpdatePackage(packageName, detailsToUpdate)
+  ddbUpdatePackage(req.query)
   .then(() => res.status(200).send())
   .catch(error => console.log(error))
 }
