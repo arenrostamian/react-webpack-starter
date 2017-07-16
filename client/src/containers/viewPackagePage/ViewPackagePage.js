@@ -13,6 +13,7 @@ class ViewPackagePage extends Component {
       <div>
         <h1>{selectedPackage.name}</h1>
         <h3>{selectedPackage.description}</h3>
+        <h3>{selectedPackage.comments}</h3>
       </div>
     )
   }

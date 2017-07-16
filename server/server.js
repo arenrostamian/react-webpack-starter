@@ -13,9 +13,9 @@ app.use(compress())
 app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))
 
-app.get('/add-package', addPackage)
+app.post('/add-package', addPackage)
 app.get('/get-package', getPackage)
-app.get('/update-package', updatePackage)
+app.post('/update-package', updatePackage)
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(DIST_DIR, '/index.html'))

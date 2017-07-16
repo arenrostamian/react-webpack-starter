@@ -88,14 +88,18 @@ class SearchBar extends Component {
 
   onSuggestionSelected (e, { suggestion }) {
     const { setSearchResults, history } = this.props
-    setSearchResults({ selectedPackage: suggestion })
-    history.push(`/package-details/${suggestion.name}`)
+    axios.get('/get-package', { params: {packageName: suggestion.name} })
+    .then(response => {
+      const { comments } = response.data
+      setSearchResults({ selectedPackage: {...suggestion, comments} })
+      history.push(`/package-details/${suggestion.name}`)
+    })
   }
 
   /* * testing dynamoDB * */
   ddbTest () {
     const updateParams = {
-      packageName: 'test16',
+      packageName: 'axios',
       vote: 2,
       comment: {
         username: 'no',
@@ -114,9 +118,9 @@ class SearchBar extends Component {
         score: 1
       }
     }
-    axios.get('/add-package', { params: addParams })
+    // axios.get('/add-package', { params: addParams })
     // axios.get('/get-package', { params: { packageName: 'test14'} })
-    // axios.get('/update-package', { params: updateParams })
+    axios.post('/update-package')
     .then(res => console.log(res.data.message))
     .catch(error => console.log(error))
   }
