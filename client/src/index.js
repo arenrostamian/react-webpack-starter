@@ -30,7 +30,7 @@ if (module.hot) {
   module.hot.accept('./App.js', () => {
     const HotApp = require('./App.js').default
     ReactDOM.render(
-      <AppContainer>
+      <AppContainer errorReporter={consoleErrorReporter}>
         <HotApp />
       </AppContainer>,
       document.getElementById('root')
