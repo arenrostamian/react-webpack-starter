@@ -1,18 +1,16 @@
 const express = require('express')
-const cors = require('cors')
 const compress = require('compression')
 const bodyParser = require('body-parser')
 const path = require('path')
-
-const { addPackage, getPackage, updatePackage } = require('./utils')
-
+const dotenv = require('dotenv')
+const { addPackage, getPackage, updatePackage } = require('./serverUtils')
 const DIST_DIR = path.join(__dirname, '../client/dist')
 
+dotenv.load()
 const app = express()
 
-// app.use(cors())
 app.use(compress())
-// app.use(bodyParser.json())
+app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))
 
 app.get('/add-package', addPackage)
@@ -23,6 +21,4 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(DIST_DIR, '/index.html'))
 })
 
-app.listen(1337, () => {
-  console.log(`nomming at 1337, nomomsayin?`)
-})
+app.listen(1337, () => console.log(`nomming at 1337, nomomsayin?`))

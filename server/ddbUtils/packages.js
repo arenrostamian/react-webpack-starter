@@ -1,20 +1,17 @@
 const AWS = require('aws-sdk')
-const path = require('path')
-
-AWS.config.loadFromPath(path.join(__dirname, './config.json'))
 
 const ddbClient = new AWS.DynamoDB.DocumentClient({ region: 'us-west-2' })
 const tableName = 'npm-packages'
 
 exports.ddbAddPackage = (packageDetails) => {
-  const { name, vote, comment } = packageDetails
-  /* * vote will be 'upvote' 'downvote' * */
+  const { packageName, vote, comment } = packageDetails
+  const commentObject = comment ? JSON.parse(comment) : null
   const params = {
     TableName: tableName,
     Item: {
-      'package-name': name,
-      'package-score': vote || 0,
-      'comments': comment ? [ comment ] : []
+      'package-name': packageName,
+      'score': Number(vote || 0),
+      'comments': comment ? [ commentObject ] : []
     }
   }
   return new Promise((resolve, reject) => {
@@ -28,7 +25,7 @@ exports.ddbGetPackage = (packageName) => {
   const params = {
     TableName: tableName,
     Key: { 'package-name': packageName },
-    AttributesToGet: ['package-score', 'comments']
+    AttributesToGet: ['score', 'comments']
   }
   return new Promise((resolve, reject) => {
     ddbClient.get(params, (error, data) => {
@@ -38,21 +35,19 @@ exports.ddbGetPackage = (packageName) => {
   })
 }
 
-exports.ddbUpdatePackage = ({ packageName, detailsToUpdate }) => {
-  console.log('ddb update package ', packageName, detailsToUpdate)
-  const { vote, comment } = detailsToUpdate
-  const params = {
+exports.ddbUpdatePackage = ({ packageName, vote, comment }) => {
+  const commentObject = JSON.parse(comment)
+  const voteParams = {
     TableName: tableName,
     Key: { 'package-name': packageName },
-    UpdateExpression: 'add comments = :c, package-score = package-score + :v',
+    UpdateExpression: 'set score = score + :v, comments = list_append (comments, :c)',
     ExpressionAttributeValues: {
-      ':c': comment,
-      ':v': vote > 0
-    },
-    ReturnValues: 'UPDATED_NEW'
+      ':v': Number(vote),
+      ':c': [commentObject]
+    }
   }
   return new Promise((resolve, reject) => {
-    ddbClient.update(params, (error, data) => {
+    ddbClient.update(voteParams, (error, data) => {
       error ? reject(error) : resolve(data)
     })
   })

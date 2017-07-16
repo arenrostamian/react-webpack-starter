@@ -94,21 +94,31 @@ class SearchBar extends Component {
 
   /* * testing dynamoDB * */
   ddbTest () {
-    const params = {
-      packageName: 'axios',
-      detailsToUpdate: {
-        vote: 1,
-        comment: {
-          username: 'tupac',
-          text: 'yas queen',
-          timestamp: Date.now(),
-          score: 1
-        }
+    const updateParams = {
+      packageName: 'test16',
+      vote: 2,
+      comment: {
+        username: 'no',
+        text: 'yas tupac',
+        timestamp: Date.now(),
+        score: 1
       }
     }
-    axios.get('/update-package', { params })
-    .then(res => console.log('ddb test res is ', res))
-    .catch(error => console.log('oops error ', error))
+    const addParams = {
+      packageName: 'test16',
+      vote: 1,
+      comment: {
+        username: 'armen',
+        text: 'yas queen',
+        timestamp: Date.now(),
+        score: 1
+      }
+    }
+    axios.get('/add-package', { params: addParams })
+    // axios.get('/get-package', { params: { packageName: 'test14'} })
+    // axios.get('/update-package', { params: updateParams })
+    .then(res => console.log(res.data.message))
+    .catch(error => console.log(error))
   }
 
   render () {
