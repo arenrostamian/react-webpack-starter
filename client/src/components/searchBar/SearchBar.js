@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 /* * Utils * */
-import axios from 'axios'
+import { addPackage, getPackage, updatePackage } from '../../utils/ddbUtils'
 import { withRouter } from 'react-router'
 import { searchSuggestions, getPackageInfo, getPackagesByKeyword } from '../../utils/npmSearch'
 
@@ -88,18 +88,20 @@ class SearchBar extends Component {
 
   onSuggestionSelected (e, { suggestion }) {
     const { setSearchResults, history } = this.props
-    axios.get('/get-package', { params: {packageName: suggestion.name} })
+    getPackage(suggestion.name)
     .then(response => {
-      const { comments } = response.data
-      setSearchResults({ selectedPackage: {...suggestion, comments} })
+      const { comments, score } = response
+      setSearchResults({ selectedPackage: {...suggestion, comments, score} })
       history.push(`/package-details/${suggestion.name}`)
     })
   }
 
   /* * testing dynamoDB * */
   ddbTest () {
+    /* * change packageName accordingly * */
+    const packageName = 'redux'
     const updateParams = {
-      packageName: 'axios',
+      packageName: packageName,
       vote: 2,
       comment: {
         username: 'no',
@@ -109,7 +111,7 @@ class SearchBar extends Component {
       }
     }
     const addParams = {
-      packageName: 'test16',
+      packageName: packageName,
       vote: 1,
       comment: {
         username: 'armen',
@@ -118,11 +120,10 @@ class SearchBar extends Component {
         score: 1
       }
     }
-    // axios.get('/add-package', { params: addParams })
-    // axios.get('/get-package', { params: { packageName: 'test14'} })
-    axios.post('/update-package')
-    .then(res => console.log(res.data.message))
-    .catch(error => console.log(error))
+    /* * uncomment test required * */
+    // addPackage(addParams)
+    // getPackage(packageName)
+    // updatePackage(updateParams)
   }
 
   render () {

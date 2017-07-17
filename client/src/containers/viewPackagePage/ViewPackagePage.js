@@ -8,12 +8,13 @@ class ViewPackagePage extends Component {
   }
   render () {
     const { selectedPackage } = this.props.search
-    console.log('selectedPackage', selectedPackage)
     return (
       <div>
         <h1>{selectedPackage.name}</h1>
         <h3>{selectedPackage.description}</h3>
-        <h3>{selectedPackage.comments}</h3>
+        <h3>{selectedPackage.score}</h3>
+        <h3>{selectedPackage.comments[0].text}</h3>
+
       </div>
     )
   }

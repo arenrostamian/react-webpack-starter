@@ -1,11 +1,11 @@
 const AWS = require('aws-sdk')
 
-const ddbClient = new AWS.DynamoDB.DocumentClient({ region: 'us-west-2' })
+const ddbClient = new AWS.DynamoDB.DocumentClient({ region: 'us-east-2' })
 const tableName = 'npm-packages'
 
 exports.ddbAddPackage = (packageDetails) => {
   const { packageName, vote, comment } = packageDetails
-  const commentObject = comment ? JSON.parse(comment) : null
+  const commentObject = comment || null
   const params = {
     TableName: tableName,
     Item: {
@@ -36,13 +36,13 @@ exports.ddbGetPackage = (packageName) => {
 }
 
 exports.ddbUpdatePackage = ({ packageName, vote, comment }) => {
-  const commentObject = JSON.parse(comment)
+  const commentObject = comment || null
   const voteParams = {
     TableName: tableName,
     Key: { 'package-name': packageName },
     UpdateExpression: 'set score = score + :v, comments = list_append (comments, :c)',
     ExpressionAttributeValues: {
-      ':v': Number(vote),
+      ':v': vote,
       ':c': [commentObject]
     }
   }
