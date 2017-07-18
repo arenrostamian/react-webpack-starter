@@ -5,8 +5,8 @@ import { Redirect } from 'react-router'
 import { Route, HashRouter } from 'react-router-dom'
 
 /* * components * */
-import { NavBar } from './components'
 import {
+  NavBar,
   HomePage,
   ProfilePage,
   ViewPackagePage

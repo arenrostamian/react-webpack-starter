@@ -4,8 +4,15 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import Auth from '../../auth/Auth'
 
+/* * Utils * */
+import { searchSuggestions, getPackageInfo, getPackagesByKeyword } from '../../utils/npmUtils/packageQueries'
+import { addPackage, getPackage, updatePackage } from '../../utils/ddbUtils/npmPackages'
+
+/* * Actions * */
+import { setSearchResults } from '../../store/actions'
+
 /* * Components * */
-import { SearchBar } from '../'
+import { SearchBar } from '../../components'
 
 /* * Styles * */
 import { Menu } from 'semantic-ui-react'
@@ -18,11 +25,12 @@ class NavBar extends Component {
   constructor () {
     super()
     this.state = {
-      activeItem: 'home',
-      searchInput: ''
+      activeItem: 'home'
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleAuthentication = this.handleAuthentication.bind(this)
+    this.handlePackageSearch = this.handlePackageSearch.bind(this)
+    this.handleSuggestionSelected = this.handleSuggestionSelected.bind(this)
   }
 
   handleClick (e, { id }) {
@@ -34,6 +42,31 @@ class NavBar extends Component {
     this.setState({ activeItem: 'authBtn' })
     id === 'authenticateBtn' && auth.authenticate()
     id === 'logoutBtn' && auth.logout()
+  }
+
+  handlePackageSearch () {
+    const { setSearchResults, history } = this.props
+    const { searchType, searchTerm } = this.state
+    if (searchType === 'name') {
+      getPackageInfo(searchTerm)
+      .then(selectedPackage => setSearchResults({ selectedPackage }))
+      .then(history.push('/package-details'))
+      .catch(error => console.log(error))
+    }
+    if (searchType === 'type') {
+      getPackagesByKeyword(searchTerm)
+      .then(suggestedPackages => setSearchResults({ suggestedPackages }))
+      .then(history.push('/explore-packages'))
+      .catch(error => console.log(error))
+    }
+  }
+
+  handleSuggestionSelected (e, { suggestion }) {
+    const { setSearchResults, history } = this.props
+    getPackage(suggestion.name)
+    .then(ddbResult => setSearchResults({ selectedPackage: { ...suggestion, ...ddbResult } }))
+    .then(history.push(`/package-details/${suggestion.name}`))
+    .catch(error => console.log(error))
   }
 
   render () {
@@ -50,7 +83,7 @@ class NavBar extends Component {
                 style={button}
                 as={Link}
                 to='/'
-                name='home'
+                name='nom'
                 active={activeItem === 'homeBtn'}
                 onClick={this.handleClick}
               />
@@ -85,7 +118,11 @@ class NavBar extends Component {
             </Menu.Menu>
           </Menu>
         </div>
-        <SearchBar />
+        <SearchBar
+          handleSuggestionSelected={this.handleSuggestionSelected}
+          handlePackageSearch={this.handlePackageSearch}
+          searchSuggestions={searchSuggestions}
+        />
       </div>
     )
   }
@@ -95,4 +132,4 @@ const mapStateToProps = ({ auth, search }) => {
   return { auth, search }
 }
 
-export default withRouter(connect(mapStateToProps, null)(NavBar))
+export default withRouter(connect(mapStateToProps, { setSearchResults })(NavBar))

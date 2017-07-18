@@ -1,7 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router'
 import Auth0Lock from 'auth0-lock'
-import { handleSession } from '../utils/utilFunctions'
 import { ddbAddUser } from '../utils/ddbUtils/users'
 
 import { AUTH_CONFIG, configOptions } from './auth0-config'
@@ -19,6 +18,17 @@ const AuthLock = new Auth0Lock(
   AUTH_CONFIG.domain,
   configOptions
 )
+
+const removeItem = item => localStorage.removeItem(item)
+const setItem = item => localStorage.setItem(item[0], item[1])
+
+export const handleSession = (type, items) => {
+  const action = type === 'remove' ? removeItem : setItem
+  return new Promise((resolve, reject) => {
+    items.forEach(item => action(item))
+    resolve()
+  })
+}
 
 class Auth {
   constructor () {
@@ -47,12 +57,11 @@ class Auth {
     const expiresAt = JSON.stringify((idTokenPayload.exp * 1000) + new Date().getTime())
     const items = [ ['accessToken', accessToken], ['idToken', idToken], ['expiresAt', expiresAt] ]
     const userID = profile.identities[0].user_id
+
     ddbAddUser(userID)
-    .then((response) => {
-      console.log(response)
-      handleSession('set', items)
-    })
+    .then(handleSession('set', items))
     .then(store.dispatch(loginSuccess({ profile })))
+    .catch(error => console.log(error))
   }
 
   logout () {
