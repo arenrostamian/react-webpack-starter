@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 /* * Utils * */
-import { addPackage, getPackage, updatePackage } from '../../utils/ddbUtils'
+import { addPackage, getPackage, updatePackage } from '../../utils/ddbUtils/npmPackages'
 import { withRouter } from 'react-router'
 import { searchSuggestions, getPackageInfo, getPackagesByKeyword } from '../../utils/npmSearch'
 

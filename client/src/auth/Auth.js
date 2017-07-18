@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router'
 import Auth0Lock from 'auth0-lock'
 import { handleSession } from '../utils/utilFunctions'
+import { ddbAddUser } from '../utils/ddbUtils/users'
 
 import { AUTH_CONFIG, configOptions } from './auth0-config'
 import store from '../store/store'
@@ -45,8 +46,12 @@ class Auth {
     const { accessToken, idToken, idTokenPayload } = authResult
     const expiresAt = JSON.stringify((idTokenPayload.exp * 1000) + new Date().getTime())
     const items = [ ['accessToken', accessToken], ['idToken', idToken], ['expiresAt', expiresAt] ]
-
-    handleSession('set', items)
+    const userID = profile.identities[0].user_id
+    ddbAddUser(userID)
+    .then((response) => {
+      console.log(response)
+      handleSession('set', items)
+    })
     .then(store.dispatch(loginSuccess({ profile })))
   }
 
