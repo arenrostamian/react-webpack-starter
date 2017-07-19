@@ -44,6 +44,7 @@ class NavBar extends Component {
     id === 'logoutBtn' && auth.logout()
   }
 
+  /* * not using yet * */
   handlePackageSearch () {
     const { setSearchResults, history } = this.props
     const { searchType, searchTerm } = this.state
@@ -64,7 +65,7 @@ class NavBar extends Component {
   handleSuggestionSelected (e, { suggestion }) {
     const { setSearchResults, history } = this.props
     getPackage(suggestion.name)
-    .then(ddbResult => setSearchResults({ selectedPackage: { ...suggestion, ...ddbResult } }))
+    .then(({ Item }) => setSearchResults({ selectedPackage: { ...suggestion, ...Item } }))
     .then(history.push(`/package-details/${suggestion.name}`))
     .catch(error => console.log(error))
   }

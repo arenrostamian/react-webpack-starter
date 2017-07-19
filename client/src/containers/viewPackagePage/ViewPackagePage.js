@@ -1,20 +1,31 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
+import { CommentsList } from '../../components'
+import { updateCommentScore } from '../../utils/ddbUtils/npmPackages'
 
 class ViewPackagePage extends Component {
   constructor (props) {
     super(props)
+    this.handleCommentVote = this.handleCommentVote.bind(this)
   }
+
+  handleCommentVote (voteParams) {
+    updateCommentScore(voteParams)
+  }
+
   render () {
-    const { selectedPackage } = this.props.search
+    const { name, description, score, comments } = this.props.search.selectedPackage
     return (
       <div>
-        <h1>{selectedPackage.name}</h1>
-        <h3>{selectedPackage.description}</h3>
-        <h3>{selectedPackage.score}</h3>
-        <h3>{selectedPackage.comments[0].text}</h3>
-
+        <div>{name}</div>
+        <div>{`description: ${description}`}</div>
+        <div>{`score: ${score}`}</div>
+        <CommentsList
+          packageName={name}
+          comments={comments}
+          handleCommentVote={this.handleCommentVote}
+        />
       </div>
     )
   }

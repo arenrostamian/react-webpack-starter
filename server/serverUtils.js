@@ -1,62 +1,26 @@
-const AWS = require('aws-sdk')
-const ddbClient = new AWS.DynamoDB.DocumentClient({ region: 'us-east-2' })
+const mongoose = require('mongoose')
+mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true })
 
-const successMessage = { message: '* * * NOM SUCCESS * * *' }
-const ddbUserTable = 'auth0-users'
-const ddbPackageTable = 'npm-packages'
+const db = mongoose.connection
 
-exports.addPackage = (req, res) => {
-  const { packageName, vote, comment } = req.body
-  const params = {
-    TableName: ddbPackageTable,
-    Item: {
-      'package-name': packageName,
-      'score': Number(vote || 0),
-      'comments': [ comment || null ]
-    }
-  }
-  ddbClient.put(params, (error, data) => {
-    res.status(error ? 500 : 200).send(error || successMessage)
-  })
-}
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', () => console.log('we in dis bitch yo'))
 
-exports.getPackage = (req, res) => {
-  const { packageName } = req.query
-  const params = {
-    TableName: ddbPackageTable,
-    Key: { 'package-name': packageName },
-    AttributesToGet: ['score', 'comments']
-  }
-  ddbClient.get(params, (error, data) => {
-    const { Item } = data
-    res.status(error ? 500 : 200).send(error || { Item })
-  })
-}
+const TestSchema = new mongoose.Schema({
+  name: String
+})
 
-exports.updatePackage = (req, res) => {
-  const { packageName, vote, comment } = req.body
-  const params = {
-    TableName: ddbPackageTable,
-    Key: { 'package-name': packageName },
-    UpdateExpression: 'set score = score + :v, comments = list_append (comments, :c)',
-    ExpressionAttributeValues: {
-      ':v': vote,
-      ':c': [comment || null]
-    }
-  }
-  ddbClient.update(params, (error, response) => {
-    res.status(error ? 500 : 200).send(error || successMessage)
-  })
-}
+const TestModel = mongoose.model('TestModel', TestSchema)
 
-exports.ddbAddUser = (req, res) => {
-  const { userID } = req.body
-  const params = {
-    TableName: ddbUserTable,
-    Item: { 'user-id': userID }
-  }
-  /* * check if user exists with ddb get some sort of hashed attributes ( ? ) * */
-  ddbClient.put(params, (error, response) => {
-    res.status(error ? 500 : 200).send(error || successMessage)
-  })
-}
+const TestModelInstance = new TestModel({ name: 'Armen yo'})
+
+// TestModel.create({ name: 'pink' }, (error, testModelInstance) => {
+//   console.log(error || testModelInstance)
+// })
+
+TestModelInstance.save((error) {
+  console.log(error || 'successfully saved')
+})
+
+
+Test.find({ name: 'Armen' }, console.log('found'))

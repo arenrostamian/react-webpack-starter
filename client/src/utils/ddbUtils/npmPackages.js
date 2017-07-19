@@ -17,3 +17,9 @@ export const updatePackage = (updateDetails) => {
   .then(res => console.log(res.data.message))
   .catch(error => console.log(error))
 }
+
+export const updateCommentScore = (voteParams) => {
+  axios.post('/update-comment-score', voteParams)
+  .then(res => console.log(res.data.message))
+  .catch(error => console.log(error))
+}

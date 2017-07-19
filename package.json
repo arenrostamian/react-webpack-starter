@@ -21,6 +21,8 @@
     "express": "^4.15.2",
     "history": "^4.6.3",
     "knex": "^0.13.0",
+    "mongodb": "^2.2.30",
+    "mongoose": "^4.10.8",
     "object-assign": "^4.1.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",

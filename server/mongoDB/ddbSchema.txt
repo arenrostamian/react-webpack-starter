@@ -1,4 +1,5 @@
 commentObject = {
+  id: int,
   username: string,
   text: string,
   timestamp: Date.now(),
