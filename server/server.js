@@ -3,13 +3,14 @@ const compress = require('compression')
 const bodyParser = require('body-parser')
 const path = require('path')
 const dotenv = require('dotenv')
+const { emojify } = require('node-emoji')
 /* * import addPackage, getPackage, updatePackage, updateCommentScore from mongoose utils * */
 const DIST_DIR = path.join(__dirname, '../client/dist')
-
 dotenv.load()
-const mongoDB = require('./mongoDB/mongoClient')
+
+const mongoClient = require('./mongoDB/mongoClient')
 const app = express()
-mongoDB()
+mongoClient()
 
 app.use(compress())
 app.use(bodyParser.json())
@@ -26,4 +27,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(DIST_DIR, '/index.html'))
 })
 
-app.listen(1337, () => console.log(`nomming at 1337, nomomsayin?`))
+app.listen(1337, () => {
+  console.log(emojify(':fire:  :fire:  :fire:  nomming at 1337 :fire:  :fire:  :fire:'))
+})
