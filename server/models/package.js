@@ -1,18 +1,18 @@
 const Model = require('objection').Model
 
-class User extends Model {
+class Package extends Model {
   static get tableName () {
-    return 'users'
+    return 'packages'
   }
 
   static get jsonSchema () {
     return {
       type: 'object',
-      required: ['id', 'authID', 'username'],
+      required: ['id', 'name'],
       properties: {
         id: { type: 'integer' },
-        authId: { type: 'integer' },
-        username: { type: 'string' }
+        name: { type: 'string' },
+        score: { type: ['integer', 'null'] }
       }
     }
   }
@@ -20,16 +20,16 @@ class User extends Model {
   static get relationMappings () {
     const { Comment } = require('./')
     return {
-      posts: {
+      comments: {
         relation: Model.HasManyRelation,
         modelClass: Comment,
         join: {
-          from: 'User.id',
-          to: 'Comment.creatorId'
+          from: 'Package.id',
+          to: 'Comment.packageId'
         }
       }
     }
   }
 }
 
-module.exports = User
+module.exports = Package

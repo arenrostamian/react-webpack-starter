@@ -1,3 +1,5 @@
+const { Comment } = require('../models')
+
 exports.addComment = (req, res) => {
   const { packageName, username, text, timestamp } = req.query
   /* * db things * */

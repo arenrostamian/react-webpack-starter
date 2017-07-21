@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { addComment, updateCommentScore } = require('../controllers/comments')
+const { addComment, updateCommentScore } = require('../controllers')
 
 router.post('/add', addComment)
 router.post('/score', updateCommentScore)
