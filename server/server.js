@@ -5,7 +5,7 @@ const middlewares = require('./middlewares')
 dotenv.load()
 
 const app = express()
-middlewares.map(middleware => app.use(middleware))
+app.use(middlewares)
 
 app.listen(1337, console.log(emojify(
   '\n:fire:  :fire:   nomming at 1337   :fire:  :fire:\n'

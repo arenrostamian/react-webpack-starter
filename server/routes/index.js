@@ -8,6 +8,7 @@ const commentsRouter = require('./comments')
 /**
  * creating routing middleware
  */
+
 router.get('/', (req, res) => {
   res.sendFile(path.join(DIST_DIR, '/index.html'))
 })
