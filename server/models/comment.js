@@ -11,7 +11,6 @@ class Comment extends Model {
       required: ['id', 'type', 'packageId', 'creatorId', 'timestamp', 'text'],
       properties: {
         id: { type: 'integer' },
-        parentId: { type: 'integer' },
         packageId: { type: 'integer' },
         creatorId: { type: 'integer' },
         timestamp: { type: 'integer' },
@@ -40,25 +39,33 @@ class Comment extends Model {
           from: 'Comment.creatorId',
           to: 'User.id'
         }
-      },
-
-      parentComment: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: Comment,
-        join: {
-          from: 'Comment.parentId',
-          to: 'Comment.id'
-        }
-      },
-
-      replies: {
-        relation: Model.HasManyRelation,
-        modelClass: Comment,
-        join: {
-          from: 'Comment.id',
-          to: 'Comment.parentId'
-        }
       }
+
+      // parentComment: {
+      //   relation: Model.ManyToManyRelation,
+      //   modelClass: Comment,
+      //   join: {
+      //     from: 'Comment.id',
+      //     through: {
+      //       from: 'Comment_Reply.replyId',
+      //       to: 'Comment_Reply.parentId'
+      //     },
+      //     to: 'Comment.id'
+      //   }
+      // },
+
+      // replies: {
+      //   relation: Model.ManyToManyRelation,
+      //   modelClass: Comment,
+      //   join: {
+      //     from: 'Comment.id',
+      //     through: {
+      //       from: 'Comment_Reply.parentId',
+      //       to: 'Comment_Reply.replyId'
+      //     },
+      //     to: 'Comment.id'
+      //   }
+      // }
     }
   }
 }
