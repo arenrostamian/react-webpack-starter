@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const SRC_DIR = path.join(__dirname, '/client/src')
 const DIST_DIR = path.join(__dirname, '/client/dist')
@@ -35,7 +36,8 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new DashboardPlugin()
   ],
   devServer: {
     compress: true,
@@ -44,6 +46,6 @@ module.exports = {
     hot: true,
     inline: true,
     watchContentBase: true,
-    proxy: {'**': 'http://localhost:1337'}
+    headers: { "Access-Control-Allow-Origin": "*" }
   }
 }

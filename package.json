@@ -4,12 +4,12 @@
   "description": "lamborghini mercy",
   "scripts": {
     "build": "node_modules/.bin/webpack -p --watch",
-    "rollout": "webpack-dev-server --colors --progress",
+    "rollout": "webpack-dashboard webpack-dev-server --progress --colors",
     "start": "nodemon ./server/server.js"
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.16.1",
+    "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
     "express": "^4.15.2",
@@ -47,6 +47,7 @@
     "redbox-react": "^1.4.3",
     "style-loader": "^0.17.0",
     "webpack": "^2.5.1",
+    "webpack-dashboard": "^0.4.0",
     "webpack-dev-server": "^2.5.1"
   }
 }
